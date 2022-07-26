@@ -7,4 +7,10 @@ await fetch(" http://localhost:3000/api/products")
 produitsData = promise;
 console.log(produitsData);
 });
+
 };
+
+const produitsData = async () => {
+await fetchProduits();
+
+document.get/("main",) .innerHTML = ${produitsData};};
