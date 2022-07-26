@@ -1,16 +1,16 @@
-let produitsData = [];
+// let produitsData = [];
 
-const fetchProduits = async () => {
-await fetch(" http://localhost:3000/api/products")
-.then((res) => res.json())
-.then((promise) => {
-produitsData = promise;
-console.log(produitsData);
-});
+// const fetchProduits = async () => {
+// await fetch(" http://localhost:3000/api/products")
+// .then((res) => res.json())
+// .then((promise) => {
+// produitsData = promise;
+// console.log(produitsData);
+// });
 
-};
+// };
 
-const produitsData = async () => {
-await fetchProduits();
+// const produitsData = async () => {
+// await fetchProduits();
 
-document.get/("main",) .innerHTML = ${produitsData};};
+// document.get/("main",) .innerHTML = ${produitsData};};
