@@ -7,7 +7,7 @@ const params = new URLSearchParams(document.location.search);
 const id = params.get("_id");
 console.log(id); 
 //--------------------------------------------------------------------------
-// Récupération des produits de l'api et traitement des données (voir script.js)
+// Récupération des produits de l'api et traitement des données 
 //--------------------------------------------------------------------------
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
@@ -181,7 +181,7 @@ function Panier() {
         //information client
         alert("RAPPEL: Vous aviez déja choisit cet article.");
         // on modifie la quantité d'un produit existant dans le panier du localstorage
-        //définition de additionQuantité qui est la valeur de l'addition de l'ancienne quantité parsée et de la nouvelle parsée pour le même produit
+        //définition de additionQuantité qui est la valeur de l'addition de l'ancienne quantité passée et de la nouvelle passée pour le même produit
         let additionQuantité = parseInt(choix.quantité) + parseInt(quantitéProduit);
         // on convertit en JSON le résultat précédent dans la zone voulue
         choix.quantité = JSON.stringify(additionQuantité);
