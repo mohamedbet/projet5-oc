@@ -101,7 +101,7 @@ function modifQuantité() {
       // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
       for (article of panier)
         if (
-          article._id === cart.dataset.ID &&
+          article._id === cart.dataset.id &&
           cart.dataset.couleur === article.couleur
         ) {
           article.quantité = eq.target.value;
@@ -127,7 +127,7 @@ function suppression() {
       let panier = JSON.parse(localStorage.getItem("panierStocké"));
       for (let d = 0, c = panier.length; d < c; d++)
         if (
-          panier[d]._id === cartdelete.dataset.ID &&
+          panier[d]._id === cartdelete.dataset.id &&
           panier[d].couleur === cartdelete.dataset.couleur
         ) {
           // déclaration de variable utile pour la suppression
