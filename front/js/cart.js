@@ -1,4 +1,4 @@
-// pour différancier la page confirmation et panier
+// pour différencier la page confirmation et panier
 const PAGE = document.location.href;
 
 // Récupération des produits de l'api
@@ -23,7 +23,7 @@ fetch("http://localhost:3000/api/products")
 function affichagePanier(index) {
   // on récupère le panier converti
   let panier = JSON.parse(localStorage.getItem("panierStocké"));
-  // si il y a un panier avec une taille differante de 0 (donc supérieure à 0)
+  // si il y a un panier avec une taille différente de 0 (donc supérieure à 0)
    if (panier && panier.length != 0) {
     // zone de correspondance clef/valeur de l'api et du panier grâce à l'id produit choisit dans le localStorage
     for (let choix of panier) {
@@ -39,7 +39,7 @@ function affichagePanier(index) {
         }
       }
     }
-    // on joue affiche,  panier a des clefs/valeurs ajoutés que l'on a pas remonté dans le local storage et sont pourtant réèlles
+    // on joue affiche,  panier a des clefs/valeurs ajoutés que l'on a pas remonté dans le local storage et sont pourtant réelles
     // ici panier à les valeurs du local storage + les valeurs définies au dessus
     //on demande à affiche() de jouer avec les données panier 
     //les valeurs ajoutés à panier ont un scope agrandi puisque appelé via la fonction affiche() d'ailleur dans affiche() il n'y a pas d'appel à panier de local storage.
@@ -138,7 +138,7 @@ function suppression() {
           nouveauPanier.splice(num, 1);
           //affichage informatif
           if (nouveauPanier && nouveauPanier.length == 0) {
-            // si il n'y a pas de panier on créait un H1 informatif et quantité appropriées
+            // si il n'y a pas de panier on crée un H1 informatif et quantité appropriées
             document.querySelector("#totalQuantity").innerHTML = "0";
             document.querySelector("#totalPrice").innerHTML = "0";
             document.querySelector("h1").innerHTML =
@@ -181,7 +181,7 @@ if (PAGE.match("cart")) {
   var contactClient = {};
   localStorage.contactClient = JSON.stringify(contactClient);
   
-  // on pointe des éléments input, on attribut à certains la même classe, ils régiront pareil aux différantes regex
+  // on pointe des éléments input, on attribut à certains la même classe, ils régiront pareil aux différentes regex
   // on pointe les input nom prénom et ville
   var prenom = document.querySelector("#firstName");
   prenom.classList.add("regex_texte");
@@ -297,11 +297,11 @@ if (PAGE.match("cart")) {
     valeur = e.target.value;
     let regMatch = valeur.match(regMatchEmail);
     let regValide = valeur.search(regValideEmail);
-    // si valeur est toujours un string vide et la regex différante de 0 (regex à -1 et le champ est vide mais pas d'erreur)
+    // si valeur est toujours un string vide et la regex différente de 0 (regex à -1 et le champ est vide mais pas d'erreur)
     if (valeur === "" && regMatch === null) {
       document.querySelector("#emailErrorMsg").textContent = "Veuillez renseigner votre email.";
       document.querySelector("#emailErrorMsg").style.color = "white";
-      // si valeur n'est plus un string vide et la regex différante de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
+      // si valeur n'est plus un string vide et la regex différente de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
     } else if ( regValide !== 0) {
       document.querySelector("#emailErrorMsg").innerHTML = "Caractère non valide";
       document.querySelector("#emailErrorMsg").style.color = "white";
@@ -321,11 +321,11 @@ if (PAGE.match("cart")) {
 let valeurEcoute = "";
 // fonction à 3 arguments réutilisable, la regex, la valeur d'écoute, et la réponse à l'écoute
 function couleurRegex(regSearch, valeurEcoute, inputAction) {
-  // si valeur est toujours un string vide et la regex différante de 0 (regex à -1 et le champ est vide mais pas d'erreur)
+  // si valeur est toujours un string vide et la regex différente de 0 (regex à -1 et le champ est vide mais pas d'erreur)
   if (valeurEcoute === "" && regSearch != 0) {
     inputAction.style.backgroundColor = "white";
     inputAction.style.color = "black";
-    // si valeur n'est plus un string vide et la regex différante de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
+    // si valeur n'est plus un string vide et la regex différente de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
   } else if (valeurEcoute !== "" && regSearch != 0) {
     inputAction.style.backgroundColor = "rgb(220, 50, 50)";
     inputAction.style.color = "white";
@@ -347,7 +347,7 @@ function texteInfo(regex, pointage, zoneEcoute) {
       if (valeur === "" && index != 0) {
         document.querySelector(pointage).textContent = "Veuillez renseigner ce champ.";
         document.querySelector(pointage).style.color = "white";
-        // si valeur n'est plus un string vide et la regex différante de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
+        // si valeur n'est plus un string vide et la regex différente de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
       } else if (valeur !== "" && index != 0) {
         document.querySelector(pointage).innerHTML = "Reformulez cette donnée";
         document.querySelector(pointage).style.color = "white";
@@ -451,7 +451,7 @@ function envoiPaquet() {
   }
 }
 
-// fonction affichage autoinvoquée du numéro de commande et vide du storage lorsque l'on est sur la page confirmation
+// fonction affichage auto-invoquée du numéro de commande et vide du storage lorsque l'on est sur la page confirmation
 (function Commande() {
   if (PAGE.match("confirmation")) {
     sessionStorage.clear();

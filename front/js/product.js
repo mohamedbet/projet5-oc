@@ -1,6 +1,6 @@
 
 // Récupération de l'id du produit via l' URL
-//la variable params récupère l'url de la page   
+//la variable PARAMS récupère l'url de la page   
 const PARAMS = new URLSearchParams(document.location.search); 
 // la variable id va récupérer la valeur du paramètre _id
 const ID = PARAMS.get("_id");
@@ -90,7 +90,7 @@ let choixProduit = document.querySelector("#addToCart");
 choixProduit.addEventListener("click", () => {
   //conditions de validation du bouton ajouter au panier
   if (
-    // les valeurs sont créées dynamiquement au click, et à l'arrivée sur la page, tant qu'il n'y a pas d'action sur la couleur et/ou la quantité, c'est 2 valeurs sont undefined.
+    // les valeurs sont créés dynamiquement au click et à l'arrivée sur la page, tant qu'il n'y a pas d'action sur la couleur et/ou la quantité, c'est 2 valeurs sont undefined.
     articleClient.quantité < 1 ||
     articleClient.quantité > 100 ||
     articleClient.quantité === undefined ||
@@ -140,7 +140,6 @@ function ajoutAutreProduit() {
   // pousse le produit choisit dans produitsTemporaires
   produitsTemporaires.push(articleClient);
   // combine produitsTemporaires et/dans produitsEnregistrés, ça s'appele produitsAPousser
-  // autre manière de faire: produitsAPousser = produitsEnregistrés.concat(produitsTemporaires);
   produitsAPousser = [...produitsEnregistrés, ...produitsTemporaires];
   //fonction pour trier et classer les id puis les couleurs 
   produitsAPousser.sort(function triage(a, b) {
@@ -170,7 +169,7 @@ function Panier() {
         //information client
         alert("RAPPEL: Vous aviez déja choisit cet article.");
         // on modifie la quantité d'un produit existant dans le panier du localstorage
-        //définition de additionQuantité qui est la valeur de l'addition de l'ancienne quantité parsée et de la nouvelle parsée pour le même produit
+        //définition de additionQuantité qui est la valeur de l'addition de l'ancienne quantité passé et de la nouvelle passé pour le même produit
         let additionQuantité = parseInt(choix.quantité) + parseInt(quantitéProduit);
         // on convertit en JSON le résultat précédent dans la zone voulue
         choix.quantité = JSON.stringify(additionQuantité);
