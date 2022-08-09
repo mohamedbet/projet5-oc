@@ -15,9 +15,10 @@ fetch("http://localhost:3000/api/products")
       document.querySelector("#cartAndFormContainer").innerHTML = "<h1>erreur 404</h1>";
       console.log("erreur 404, sur ressource api: " + err);
   });
-} else {
-  console.log("sur page confirmation");
-}
+} 
+// else {
+//   console.log("sur page confirmation");
+// }
 
 // Fonction détermine les conditions d'affichage des produits du panier
 function affichagePanier(index) {
@@ -460,11 +461,12 @@ function envoiPaquet() {
     let numCom = new URLSearchParams(document.location.search).get("commande");
     // merci et mise en page
     document.querySelector("#orderId").innerHTML = `<br>${numCom}<br>Merci pour votre achat`;
-    console.log("valeur de l'orderId venant de l'url: " + numCom);
+    // console.log("valeur de l'orderId venant de l'url: " + numCom);
     //réinitialisation du numero de commande
     numCom = undefined;
-  } else {
-    console.log("sur page cart");
-  }
+  } 
+//   else {
+//     console.log("sur page cart");
+//   }
 })();
 
