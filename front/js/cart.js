@@ -6,45 +6,43 @@ const PAGE = document.location.href;
 if (PAGE.match("cart")) {
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
-  .then((objetProduits) => {
-      console.log(objetProduits);
-      // appel de la fonction affichagePanier
-      affichagePanier(objetProduits);
+  .then((canapes) => {
+      console.log(canapes);
+      // appel de la fonction displayPanier
+      displayPanier(canapes);
   })
   .catch((err) => {
       document.querySelector("#cartAndFormContainer").innerHTML = "<h1>erreur 404</h1>";
       console.log("erreur 404, sur ressource api: " + err);
   });
 } 
-// else {
-//   console.log("sur page confirmation");
-// }
+
 
 // Fonction détermine les conditions d'affichage des produits du panier
-function affichagePanier(index) {
+function displayPanier(index) {
   // on récupère le panier converti
-  let panier = JSON.parse(localStorage.getItem("panierStocké"));
+  let panier = JSON.parse(localStorage.getItem("panierStocker"));
   // si il y a un panier avec une taille différente de 0 (donc supérieure à 0)
    if (panier && panier.length != 0) {
     // zone de correspondance clef/valeur de l'api et du panier grâce à l'id produit choisit dans le localStorage
-    for (let choix of panier) {
-      console.log(choix);
+    for (let choice of panier) {
+      console.log(choice);
       for (let g = 0, h = index.length; g < h; g++) {
-        if (choix._id === index[g]._id) {
+        if (choice._id === index[g]._id) {
           // création et ajout de valeurs à panier qui vont servir pour les valeurs dataset
-          choix.name = index[g].name;
-          choix.prix = index[g].price;
-          choix.image = index[g].imageUrl;
-          choix.description = index[g].description;
-          choix.alt = index[g].altTxt;
+          choice.name = index[g].name;
+          choice.price = index[g].price;
+          choice.image = index[g].imageUrl;
+          choice.description = index[g].description;
+          choice.alt = index[g].altTxt;
         }
       }
     }
-    // on joue affiche,  panier a des clefs/valeurs ajoutés que l'on a pas remonté dans le local storage et sont pourtant réelles
+    // on joue display,  panier a des clefs/valeurs ajoutés que l'on a pas remonté dans le local storage et sont pourtant réelles
     // ici panier à les valeurs du local storage + les valeurs définies au dessus
-    //on demande à affiche() de jouer avec les données panier 
-    //les valeurs ajoutés à panier ont un scope agrandi puisque appelé via la fonction affiche() d'ailleur dans affiche() il n'y a pas d'appel à panier de local storage.
-    affiche(panier);
+    //on demande à display() de jouer avec les données panier 
+    //les valeurs ajoutés à panier ont un scope agrandi puisque appelé via la fonction display() d'ailleur dans display() il n'y a pas d'appel à panier de local storage.
+    display(panier);
   } else {
     // si il n'y a pas de panier on créait un H1 informatif et quantité appropriées
     document.querySelector("#totalQuantity").innerHTML = "0";
@@ -53,92 +51,92 @@ function affichagePanier(index) {
       "Vous n'avez pas d'article dans votre panier";
   }
   // reste à l'écoute grâce aux fonctions suivantes pour modifier l'affichage
-  modifQuantité();
-  suppression();
+  modifyQuantity();
+  deletion();
 }
 
 //Fonction d'affichage d'un panier (tableau)
-function affiche(indexé) {
+function display(indexer) {
   // on déclare et on pointe la zone d'affichage
   let zonePanier = document.querySelector("#cart__items");
   // on créait les affichages des produits du panier via un map et introduction de dataset dans le code
-  zonePanier.innerHTML += indexé.map((choix) => 
-  `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantité="${choix.quantité}" data-prix="${choix.prix}"> 
+  zonePanier.innerHTML += indexer.map((choice) => 
+  `<article class="cart__item" data-id="${choice._id}" data-color="${choice.color}" data-quantity="${choice.quantity}" data-price="${choice.price}"> 
     <div class="cart__item__img">
-      <img src="${choix.image}" alt="${choix.alt}">
+      <img src="${choice.image}" alt="${choice.alt}">
     </div>
     <div class="cart__item__content">
       <div class="cart__item__content__titlePrice">
-        <h2>${choix.name}</h2>
-        <span>couleur : ${choix.couleur}</span>
-        <p data-prix="${choix.prix}">${choix.prix} €</p>
+        <h2>${choice.name}</h2>
+        <span>color : ${choice.color}</span>
+        <p data-price="${choice.price}">${choice.price} €</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
           <p>Qté : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choix.quantité}">
+          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${choice.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${choix._id}" data-couleur="${choix.couleur}">Supprimer</p>
+          <p class="deleteItem" data-id="${choice._id}" data-color="${choice.color}">Supprimer</p>
         </div>
       </div>
     </div>
   </article>`
     ).join(""); //on remplace les virgules de jonctions des objets du tableau par un vide
   // reste à l'écoute des modifications de quantité pour l'affichage et actualiser les données
-  totalProduit();
+  totalProduct();
 }
 
 // fonction modifQuantité on modifie dynamiquement les quantités du panier
-function modifQuantité() {
-  const cart = document.querySelectorAll(".cart__item");
+function modifyQuantity() {
+  const CART = document.querySelectorAll(".cart__item");
   /* manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
-   cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); */
+   cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.color + " " + cart.dataset.quantity); }); */
   // On écoute ce qu'il se passe dans itemQuantity de l'article concerné
-  cart.forEach((cart) => {
+  CART.forEach((cart) => {
     cart.addEventListener("change", (eq) => {
       // vérification d'information de la valeur du clic et son positionnement dans les articles
-      let panier = JSON.parse(localStorage.getItem("panierStocké"));
+      let panier = JSON.parse(localStorage.getItem("panierStocker"));
       // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
       for (article of panier)
         if (
           article._id === cart.dataset.id &&
-          cart.dataset.couleur === article.couleur
+          cart.dataset.color === article.color
         ) {
-          article.quantité = eq.target.value;
-          localStorage.panierStocké = JSON.stringify(panier);
+          article.quantity = eq.target.value;
+          localStorage.panierStocker = JSON.stringify(panier);
           // on met à jour le dataset quantité
-          cart.dataset.quantité = eq.target.value;
+          cart.dataset.quantity = eq.target.value;
           // on joue la fonction pour actualiser les données
-          totalProduit();
+          totalProduct();
         }
     });
   });
 }
 
 // fonction supression on supprime un article dynamiquement du panier et donc de l'affichage
-function suppression() {
+function deletion() {
   // déclaration de variables
-  const cartdelete = document.querySelectorAll(".cart__item .deleteItem");
+  const CARTDELETE = document.querySelectorAll(".cart__item .deleteItem");
   // pour chaque élément cartdelete
-  cartdelete.forEach((cartdelete) => {
+  CARTDELETE.forEach((cartdelete) => {
     // On écoute s'il y a un clic dans l'article concerné
     cartdelete.addEventListener("click", () => {
       // appel de la ressource du local storage
-      let panier = JSON.parse(localStorage.getItem("panierStocké"));
+      let panier = JSON.parse(localStorage.getItem("panierStocker"));
       for (let d = 0, c = panier.length; d < c; d++)
         if (
           panier[d]._id === cartdelete.dataset.id &&
-          panier[d].couleur === cartdelete.dataset.couleur
+          panier[d].color === cartdelete.dataset.color
         ) {
           // déclaration de variable utile pour la suppression
-          const num = [d];
+          const NUM = [d];
           // création d'un tableau miroir, voir mutation
-          let nouveauPanier = JSON.parse(localStorage.getItem("panierStocké"));
+          let newPanier = JSON.parse(localStorage.getItem("panierStocker"));
           //suppression de 1 élément à l'indice num
-          nouveauPanier.splice(num, 1);
+          newPanier.splice(NUM, 1);
           //affichage informatif
-          if (nouveauPanier && nouveauPanier.length == 0) {
+          if (newPanier && newPanier.length == 0) {
             // si il n'y a pas de panier on crée un H1 informatif et quantité appropriées
             document.querySelector("#totalQuantity").innerHTML = "0";
             document.querySelector("#totalPrice").innerHTML = "0";
@@ -146,8 +144,8 @@ function suppression() {
               "Vous n'avez pas d'article dans votre panier";
           }
           // on renvoit le nouveau panier converti dans le local storage et on joue la fonction
-          localStorage.panierStocké = JSON.stringify(nouveauPanier);
-          totalProduit(); // logique mais pas obligatoire à cause du reload plus bas qui raffraichit l'affichage; serait necessaire avec suppression sans reload
+          localStorage.panierStocker = JSON.stringify(newPanier);
+          totalProduct(); // logique mais pas obligatoire à cause du reload plus bas qui raffraichit l'affichage; serait necessaire avec suppression sans reload
           // on recharge la page qui s'affiche sans le produit grace au nouveau panier
           return location.reload();
         }
@@ -156,24 +154,24 @@ function suppression() {
 }
 
 // fonction ajout nombre total produit et coût total
-function totalProduit() {
+function totalProduct() {
   // déclaration variable en tant que nombre
   let totalArticle = 0;
   // déclaration variable en tant que nombre
-  let totalPrix = 0;
+  let totalPrice = 0;
   // on pointe l'élément
-  const cart = document.querySelectorAll(".cart__item");
+  const CART = document.querySelectorAll(".cart__item");
   // pour chaque élément cart
-  cart.forEach((cart) => {
+  CART.forEach((cart) => {
     //je récupère les quantités des produits grâce au dataset
-    totalArticle += JSON.parse(cart.dataset.quantité);
+    totalArticle += JSON.parse(cart.dataset.quantity);
     // je créais un opérateur pour le total produit grâce au dataset
-    totalPrix += cart.dataset.quantité * cart.dataset.prix;
+    totalPrice += cart.dataset.quantity * cart.dataset.price;
   });
   // je pointe l'endroit d'affichage nombre d'article
   document.getElementById("totalQuantity").textContent = totalArticle;
   // je pointe l'endroit d'affichage du prix total
-  document.getElementById("totalPrice").textContent = totalPrix;
+  document.getElementById("totalPrice").textContent = totalPrice;
 }
 
 //  formulaire
@@ -208,7 +206,7 @@ if (PAGE.match("cart")) {
 let regexLettre = /^[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,31}$/i;
 // /^ début regex qui valide les caratères chiffre lettre et caratères spéciaux a-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ aussi les espaces blancs et tiret \s- comprit entre 1 et 60 caratères (nombre de caractère maximum sur carte identité) {1,60} et on termine la regex $/i en indiquant que les éléments selectionnés ne sont pas sensible à la casse
 let regexChiffreLettre = /^[a-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,60}$/i;
-let regValideEmail = /^[a-z0-9æœ.!#$%&’*+/=?^_`{|}~"(),:;<>@[\]-]{1,60}$/i;
+let regValidEmail = /^[a-z0-9æœ.!#$%&’*+/=?^_`{|}~"(),:;<>@[\]-]{1,60}$/i;
 let regMatchEmail = /^[a-zA-Z0-9æœ.!#$%&’*+/=?^_`{|}~"(),:;<>@[\]-]+@([\w-]+\.)+[\w-]{2,4}$/i;
 
 // Ecoute et attribution de point(pour sécurité du clic) si ces champs sont ok d'après la regex
@@ -235,8 +233,8 @@ if (PAGE.match("cart")) {
         contactClient.regexNormal = 0;
       }
       localStorage.contactClient = JSON.stringify(contactClient);
-      couleurRegex(regNormal, valeur, regexTexte);
-      valideClic();
+      colorRegex(regNormal, valeur, regexTexte);
+      validClic();
     })
   );
 }
@@ -263,8 +261,8 @@ if (PAGE.match("cart")) {
       contactClient.regexAdresse = 0;
     }
     localStorage.contactClient = JSON.stringify(contactClient);
-    couleurRegex(regAdresse, valeur, regexAdresse);
-    valideClic();
+    colorRegex(regAdresse, valeur, regexAdresse);
+    validClic();
   });
 }
 
@@ -278,16 +276,16 @@ if (PAGE.match("cart")) {
     valeur = e.target.value;
     let regMatch = valeur.match(regMatchEmail);
     // quand le resultat sera correct, le console log affichera une autre réponse que null; regValide sera la valeur de la réponse regex, 0 ou -1
-    let regValide = valeur.search(regValideEmail);
-    if (regValide === 0 && regMatch !== null) {
+    let regValid = valeur.search(regValidEmail);
+    if (regValid === 0 && regMatch !== null) {
       contactClient.email = email.value;
       contactClient.regexEmail = 1;
     } else {
       contactClient.regexEmail = 0;
     }
     localStorage.contactClient = JSON.stringify(contactClient);
-    couleurRegex(regValide, valeur, regexEmail);
-    valideClic();
+    colorRegex(regValid, valeur, regexEmail);
+    validClic();
   });
 }
 
@@ -297,13 +295,13 @@ if (PAGE.match("cart")) {
     // valeur sera la valeur de l'input en dynamique
     valeur = e.target.value;
     let regMatch = valeur.match(regMatchEmail);
-    let regValide = valeur.search(regValideEmail);
+    let regValid = valeur.search(regValidEmail);
     // si valeur est toujours un string vide et la regex différente de 0 (regex à -1 et le champ est vide mais pas d'erreur)
     if (valeur === "" && regMatch === null) {
       document.querySelector("#emailErrorMsg").textContent = "Veuillez renseigner votre email.";
       document.querySelector("#emailErrorMsg").style.color = "white";
       // si valeur n'est plus un string vide et la regex différente de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
-    } else if ( regValide !== 0) {
+    } else if ( regValid !== 0) {
       document.querySelector("#emailErrorMsg").innerHTML = "Caractère non valide";
       document.querySelector("#emailErrorMsg").style.color = "white";
       // pour le reste des cas (quand la regex ne décèle aucune erreur et est à 0 peu importe le champ vu qu'il est validé par la regex)
@@ -319,15 +317,15 @@ if (PAGE.match("cart")) {
 
 // fonction couleurRegex qui modifira la couleur de l'input par remplissage tapé, aide visuelle et accessibilité
 // on détermine une valeur de départ à valeur qui sera un string
-let valeurEcoute = "";
+let listenValue = "";
 // fonction à 3 arguments réutilisable, la regex, la valeur d'écoute, et la réponse à l'écoute
-function couleurRegex(regSearch, valeurEcoute, inputAction) {
+function colorRegex(regSearch, listenValue, inputAction) {
   // si valeur est toujours un string vide et la regex différente de 0 (regex à -1 et le champ est vide mais pas d'erreur)
-  if (valeurEcoute === "" && regSearch != 0) {
+  if (listenValue === "" && regSearch != 0) {
     inputAction.style.backgroundColor = "white";
     inputAction.style.color = "black";
     // si valeur n'est plus un string vide et la regex différente de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
-  } else if (valeurEcoute !== "" && regSearch != 0) {
+  } else if (listenValue !== "" && regSearch != 0) {
     inputAction.style.backgroundColor = "rgb(220, 50, 50)";
     inputAction.style.color = "white";
     // pour le reste des cas (quand la regex ne décèle aucune erreur et est à 0 peu importe le champ vu qu'il est validé par la regex)
@@ -338,9 +336,9 @@ function couleurRegex(regSearch, valeurEcoute, inputAction) {
 }
 
 // fonction d'affichage individuel des paragraphes sous input sauf pour l'input email
-function texteInfo(regex, pointage, zoneEcoute) {
+function texteInfo(regex, pointage, zoneListen) {
       if (PAGE.match("cart")) {
-      zoneEcoute.addEventListener("input", (e) => {
+      zoneListen.addEventListener("input", (e) => {
       // valeur sera la valeur de l'input en dynamique
       valeur = e.target.value;
       index = valeur.search(regex);
@@ -364,7 +362,7 @@ function texteInfo(regex, pointage, zoneEcoute) {
 // Fonction de validation/d'accés au clic du bouton du formulaire
 let commande = document.querySelector("#order");
 // la fonction sert à valider le clic de commande de manière interactive
-function valideClic() {
+function validClic() {
   let contactRef = JSON.parse(localStorage.getItem("contactClient"));
   let somme =
     contactRef.regexNormal + contactRef.regexAdresse + contactRef.regexEmail;
@@ -382,7 +380,7 @@ if (PAGE.match("cart")) {
   commande.addEventListener("click", (e) => {
     // empeche de recharger la page on prévient le reload du bouton
     e.preventDefault();
-    valideClic();
+    validClic();
     envoiPaquet();
   });
 }
@@ -392,7 +390,7 @@ if (PAGE.match("cart")) {
 let panierId = [];
 function tableauId() {
 // appel des ressources
-let panier = JSON.parse(localStorage.getItem("panierStocké"));
+let panier = JSON.parse(localStorage.getItem("panierStocker"));
 // récupération des id produit dans panierId
 if (panier && panier.length > 0) {
   for (let indice of panier) {
@@ -465,8 +463,6 @@ function envoiPaquet() {
     //réinitialisation du numero de commande
     numCom = undefined;
   } 
-//   else {
-//     console.log("sur page cart");
-//   }
+
 })();
 

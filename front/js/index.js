@@ -2,12 +2,12 @@
 fetch("http://localhost:3000/api/products")
   // quand tu as la réponse donne le résultat en json.
   .then((res) => res.json())
-  // ce que l'on a reçu et qui a été traité en json sera appelé objetProduits
-  .then((objetProduits) => {
+  // ce que l'on a reçu et qui a été traité en json sera appelé canapes
+  .then((canapes) => {
     // donne moi des informations en console sur ce qui est récupéré sous forme tableau.
-    console.table(objetProduits);
+    console.table(canapes);
     // appel de la fonction d'affichage des produits
-    lesKanaps(objetProduits);
+    kanaps(canapes);
   })
   // dans le cas d'une erreur remplace le contenu de titre par un h1 au contenu de erreur 404 et renvoit en console l'erreur.
   .catch((err) => {
@@ -16,7 +16,7 @@ fetch("http://localhost:3000/api/products")
   });
 
 // fonction d'affichage des produits de l'api sur la page index
-function lesKanaps(index) {
+function kanaps(index) {
   // déclaration de variable de la zone d'article
   let zoneArticle = document.querySelector("#items");
   // boucle pour chaque indice(nommé 'article') dans index

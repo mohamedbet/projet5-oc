@@ -9,9 +9,9 @@ console.log(ID);
 // Récupération des produits de l'api et traitement des données (voir index.js)
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
-  .then((objetProduits) => {
+  .then((canapes) => {
     // execution de la fontion lesProduits
-    lesProduits(objetProduits);
+    products(canapes);
   })
   .catch((err) => {
     document.querySelector(".item").innerHTML = "<h1>erreur 404</h1>";
@@ -25,26 +25,26 @@ let articleClient = {};
 articleClient._id = ID;
 
 // fonction d'affichage du produit de l'api
-function lesProduits(produit) {
+function products(product) {
   // déclaration des variables pointage des éléments
   let imageAlt = document.querySelector("article div.item__img");
-  let titre = document.querySelector("#title");
-  let prix = document.querySelector("#price");
+  let title = document.querySelector("#title");
+  let price = document.querySelector("#price");
   let description = document.querySelector("#description");
-  let couleurOption = document.querySelector("#colors");
+  let colorOption = document.querySelector("#colors");
   // boucle for pour chercher un indice
-  for (let choix of produit) {
+  for (let choice of product) {
     //si id (définit par l'url) est identique à un _id d'un des produits du tableau, on récupère son indice de tableau qui sert pour les éléments produit à ajouter
-    if (ID === choix._id) {
+    if (ID === choice._id) {
       //ajout des éléments de manière dynamique
-      imageAlt.innerHTML = `<img src="${choix.imageUrl}" alt="${choix.altTxt}">`;
-      titre.textContent = `${choix.name}`;
-      prix.textContent = `${choix.price}`;
-      description.textContent = `${choix.description}`;
+      imageAlt.innerHTML = `<img src="${choice.imageUrl}" alt="${choice.altTxt}">`;
+      title.textContent = `${choice.name}`;
+      price.textContent = `${choice.price}`;
+      description.textContent = `${choice.description}`;
       // boucle pour chercher les couleurs pour chaque produit en fonction de sa clef/valeur (la logique: tableau dans un tableau = boucle dans boucle)
-      for (let couleur of choix.colors) {
+      for (let color of choice.colors) {
         // ajout des balises d'option couleur avec leur valeur
-        couleurOption.innerHTML += `<option value="${couleur}">${couleur}</option>`;
+        colorOption.innerHTML += `<option value="${color}">${color}</option>`;
       }
     }
   }
@@ -53,49 +53,49 @@ function lesProduits(produit) {
 
 // choix couleur dynamique
 // définition des variables
-let choixCouleur = document.querySelector("#colors");
+let choiceColor = document.querySelector("#colors");
 // On écoute ce qu'il se passe dans #colors
-choixCouleur.addEventListener("input", (ec) => {
-  let couleurProduit;
+choiceColor.addEventListener("input", (ec) => {
+  let colorProduct;
   // on récupère la valeur de la cible de l'évenement dans couleur
-  couleurProduit = ec.target.value;
+  colorProduct = ec.target.value;
   // on ajoute la couleur à l'objet panierClient
-  articleClient.couleur = couleurProduit;
+  articleClient.color = colorProduct;
   //ça reset la couleur et le texte du bouton si il y a une action sur les inputs dans le cas d'une autre commande du même produit
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
-  console.log(couleurProduit);
+  console.log(colorProduct);
 });
 
 // choix quantité dynamique
 // définition des variables
-let choixQuantité = document.querySelector('input[id="quantity"]');
-let quantitéProduit;
+let choiceQuantity = document.querySelector('input[id="quantity"]');
+let quantityProduct;
 // On écoute ce qu'il se passe dans input[name="itemQuantity"]
-choixQuantité.addEventListener("input", (eq) => {
+choiceQuantity.addEventListener("input", (eq) => {
   // on récupère la valeur de la cible de l'évenement dans couleur
-  quantitéProduit = eq.target.value;
+  quantityProduct = eq.target.value;
   // on ajoute la quantité à l'objet panierClient
-  articleClient.quantité = quantitéProduit;
+  articleClient.quantity = quantityProduct;
   //ça reset la couleur et le texte du bouton si il y a une action sur les inputs dans le cas d'une autre commande du même produit
   document.querySelector("#addToCart").style.color = "white";
   document.querySelector("#addToCart").textContent = "Ajouter au panier";
-  console.log(quantitéProduit);
+  console.log(quantityProduct);
 });
 
 // conditions de validation du clic via le bouton ajouter au panier
 // déclaration variable
-let choixProduit = document.querySelector("#addToCart");
+let choiceProduct = document.querySelector("#addToCart");
 // On écoute ce qu'il se passe sur le bouton #addToCart pour faire l'action :
-choixProduit.addEventListener("click", () => {
+choiceProduct.addEventListener("click", () => {
   //conditions de validation du bouton ajouter au panier
   if (
     // les valeurs sont créés dynamiquement au click et à l'arrivée sur la page, tant qu'il n'y a pas d'action sur la couleur et/ou la quantité, c'est 2 valeurs sont undefined.
-    articleClient.quantité < 1 ||
-    articleClient.quantité > 100 ||
-    articleClient.quantité === undefined ||
-    articleClient.couleur === "" ||
-    articleClient.couleur === undefined
+    articleClient.quantity < 1 ||
+    articleClient.quantity > 100 ||
+    articleClient.quantity === undefined ||
+    articleClient.color === "" ||
+    articleClient.color === undefined
   ) {
     // joue l'alerte
     alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
@@ -112,74 +112,74 @@ choixProduit.addEventListener("click", () => {
 
 // Déclaration de tableaux utiles
 // déclaration tableau qui sera le 1er, unique et destiné à initialiser le panier
-let choixProduitClient = [];
-// déclaration tableau qui sera ce qu'on récupère du local storage appelé panierStocké et qu'on convertira en JSon (importance dans Panier())
-let produitsEnregistrés = [];
-// déclaration tableau qui sera un choix d'article/couleur non effectué donc non présent dans le panierStocké
-let produitsTemporaires = [];
-// déclaration tableau qui sera la concaténation des produitsEnregistrés et de produitsTemporaires
-let produitsAPousser = [];
+let choiceProductClient = [];
+// déclaration tableau qui sera ce qu'on récupère du local storage appelé panierStocker et qu'on convertira en JSon (importance dans Panier())
+let productsChecked = [];
+// déclaration tableau qui sera un choix d'article/couleur non effectué donc non présent dans le panierStocker
+let productsTemporary = [];
+// déclaration tableau qui sera la concaténation des productsPush et de productsTemporary
+let productsPush = [];
 
-// fonction ajoutPremierProduit qui ajoute l'article choisi dans le tableau vierge
-function ajoutPremierProduit() {
-  console.log(produitsEnregistrés);
+// fonction ajout Premier Produit qui ajoute l'article choisi dans le tableau vierge
+function addFirstProduct() {
+  console.log(productsChecked);
   //si produitsEnregistrés est null c'est qu'il n'a pas été créé
-  if (produitsEnregistrés === null) {
+  if (productsChecked === null) {
     // pousse le produit choisit dans choixProduitClient
-    choixProduitClient.push(articleClient);
+    choiceProductClient.push(articleClient);
     console.log(articleClient);
     // dernière commande, envoit choixProduitClient dans le local storage sous le nom de panierStocké de manière JSON stringifié
-    return (localStorage.panierStocké = JSON.stringify(choixProduitClient));
+    return (localStorage.panierStocker = JSON.stringify(choiceProductClient));
   }
 }
 
-// fonction ajoutAutreProduit qui ajoute l'article dans le tableau non vierge et fait un tri
-function ajoutAutreProduit() {
-  // vide/initialise produitsAPousser pour recevoir les nouvelles données
-  produitsAPousser = [];
-  // pousse le produit choisit dans produitsTemporaires
-  produitsTemporaires.push(articleClient);
-  // combine produitsTemporaires et/dans produitsEnregistrés, ça s'appele produitsAPousser
-  produitsAPousser = [...produitsEnregistrés, ...produitsTemporaires];
+// fonction ajout Autre Produit qui ajoute l'article dans le tableau non vierge et fait un tri
+function addAnotherProduct() {
+  // vide/initialise productsPush pour recevoir les nouvelles données
+  productsPush = [];
+  // pousse le produit choisit dans productsTemporary
+  productsTemporary.push(articleClient);
+  // combine productsTemporary et/dans productsChecked, ça s'appele produitsPush
+  productsPush = [...productsChecked, ...productsTemporary];
   //fonction pour trier et classer les id puis les couleurs 
-  produitsAPousser.sort(function triage(a, b) {
+  productsPush.sort(function triage(a, b) {
     if (a._id < b._id) return -1;
     if (a._id > b._id) return 1;
     if (a._id = b._id){
-      if (a.couleur < b.couleur) return -1;
-      if (a.couleur > b.couleur) return 1;
+      if (a.color < b.color) return -1;
+      if (a.color > b.color) return 1;
     }
     return 0;
   });
-  // vide/initialise produitsTemporaires maintenant qu'il a été utilisé
-  produitsTemporaires = [];
-  // dernière commande, envoit produitsAPousser dans le local storage sous le nom de panierStocké de manière JSON stringifié
-  return (localStorage.panierStocké = JSON.stringify(produitsAPousser));
+  // vide/initialise produitsTemporary maintenant qu'il a été utilisé
+  productsTemporary = [];
+  // dernière commande, envoit produitsPush dans le local storage sous le nom de panierStocker de manière JSON stringifier
+  return (localStorage.panierStocker = JSON.stringify(productsPush));
 }
 
 // fonction Panier qui ajuste la quantité si le produit est déja dans le tableau, sinon le rajoute si tableau il y a, ou créait le tableau avec un premier article choisi 
 function Panier() {
-  // variable qui sera ce qu'on récupère du local storage appelé panierStocké et qu'on a convertit en JSon
-  produitsEnregistrés = JSON.parse(localStorage.getItem("panierStocké"));
-  // si produitEnregistrés existe (si des articles ont déja été choisis et enregistrés par le client)
-  if (produitsEnregistrés) {
-    for (let choix of produitsEnregistrés) {
+  // variable qui sera ce qu'on récupère du local storage appelé panierStocker et qu'on a convertit en JSon
+  productsChecked = JSON.parse(localStorage.getItem("panierStocker"));
+  // si produitChecked existe (si des articles ont déja été choisis et enregistrés par le client)
+  if (productsChecked) {
+    for (let choice of productsChecked) {
       //comparateur d'égalité des articles actuellement choisis et ceux déja choisis
-      if (choix._id === ID && choix.couleur === articleClient.couleur) {
+      if (choice._id === ID && choice.color === articleClient.color) {
         //information client
         alert("RAPPEL: Vous aviez déja choisit cet article.");
         // on modifie la quantité d'un produit existant dans le panier du localstorage
-        //définition de additionQuantité qui est la valeur de l'addition de l'ancienne quantité passé et de la nouvelle passé pour le même produit
-        let additionQuantité = parseInt(choix.quantité) + parseInt(quantitéProduit);
+        //définition de additionAmount qui est la valeur de l'addition de l'ancienne quantité passé et de la nouvelle passé pour le même produit
+        let additionQuantity = parseInt(choice.quantity) + parseInt(quantityProduct);
         // on convertit en JSON le résultat précédent dans la zone voulue
-        choix.quantité = JSON.stringify(additionQuantité);
+        choice.quantity = JSON.stringify(additionQuantity);
         // dernière commande, on renvoit un nouveau panierStocké dans le localStorage
-        return (localStorage.panierStocké = JSON.stringify(produitsEnregistrés));
+        return (localStorage.panierStocker = JSON.stringify(productsChecked));
       }
     }
-    // appel fonction ajoutAutreProduit si la boucle au dessus ne retourne rien donc n'a pas d'égalité
-    return ajoutAutreProduit();
+    // appel fonction ajout Autre Produit si la boucle au dessus ne retourne rien donc n'a pas d'égalité
+    return addAnotherProduct();
   }
-  // appel fonction ajoutPremierProduit si produitsEnregistrés n'existe pas
-  return ajoutPremierProduit();
+  // appel fonction ajoutPremierProduit si produits Enregistrés n'existe pas
+  return addFirstProduct();
 }
