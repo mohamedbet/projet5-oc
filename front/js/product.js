@@ -48,7 +48,6 @@ function products(product) {
       }
     }
   }
-  console.log("affichage effectué");
 }
 
 // choix couleur dynamique
@@ -128,7 +127,7 @@ function addFirstProduct() {
     // pousse le produit choisit dans choixProduitClient
     choiceProductClient.push(articleClient);
     console.log(articleClient);
-    // dernière commande, envoit choixProduitClient dans le local storage sous le nom de panierStocké de manière JSON stringifié
+    // dernière commande, envoit choixProduitClient dans le local storage sous le nom de panierStockr de manière JSON stringifier
     return (localStorage.panierStocker = JSON.stringify(choiceProductClient));
   }
 }
