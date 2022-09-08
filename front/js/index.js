@@ -21,13 +21,30 @@ function kanaps(index) {
   let zoneArticle = document.querySelector("#items");
   // boucle pour chaque indice(nommé 'article') dans index
   for (let article of index) {
+    let a=document.createElement("a")
+    a.href=`./product.html?_id=${article._id}`
+    let art=document.createElement("article")
+    a.appendChild(art)
+    let img=document.createElement("img")
+    img.alt=`${article.altTxt}`
+    img.src=`${article.imageUrl}`
+    art.appendChild(img)
+    let h3=document.createElement("h3")
+    h3.className="productName"
+    h3.textContent=`${article.name}`
+    art.appendChild(h3)
+    let p=document.createElement("p")
+    p.className="productDescription"
+    p.textContent=`${article.description}`
+    art.appendChild(p)
+    zoneArticle.appendChild(a)
     // création et ajout des zones d'articles, insertion de l'adresse produit via chemin produit + paramètres(son id);
-    zoneArticle.innerHTML += `<a href="./product.html?_id=${article._id}">
-    <article>
-      <img src="${article.imageUrl}" alt="${article.altTxt}">
-      <h3 class="productName">${article.name}</h3>
-      <p class="productDescription">${article.description}</p>
-    </article>
-  </a>`;
+  //   zoneArticle.innerHTML += `<a href="./product.html?_id=${article._id}">
+  //   <article>
+  //     <img src="${article.imageUrl}" alt="${article.altTxt}">
+  //     <h3 class="productName">${article.name}</h3>
+  //     <p class="productDescription">${article.description}</p>
+  //   </article>
+  // </a>`;
   }
 }

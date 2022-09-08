@@ -36,6 +36,7 @@ function products(product) {
   for (let choice of product) {
     //si id (définit par l'url) est identique à un _id d'un des produits du tableau, on récupère son indice de tableau qui sert pour les éléments produit à ajouter
     if (ID === choice._id) {
+      
       //ajout des éléments de manière dynamique
       imageAlt.innerHTML = `<img src="${choice.imageUrl}" alt="${choice.altTxt}">`;
       title.textContent = `${choice.name}`;
