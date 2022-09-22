@@ -1,10 +1,10 @@
 
 // Récupération de l'id du produit via l' URL
 //la variable PARAMS récupère l'url de la page   
-const PARAMS = new URLSearchParams(document.location.search); 
+const PARAMS = new URLSearchParams(document.location.search);
 // la variable id va récupérer la valeur du paramètre _id
 const ID = PARAMS.get("_id");
-console.log(ID); 
+console.log(ID);
 
 // Récupération des produits de l'api et traitement des données (voir index.js)
 fetch("http://localhost:3000/api/products")
@@ -36,7 +36,7 @@ function products(product) {
   for (let choice of product) {
     //si id (définit par l'url) est identique à un _id d'un des produits du tableau, on récupère son indice de tableau qui sert pour les éléments produit à ajouter
     if (ID === choice._id) {
-      
+
       //ajout des éléments de manière dynamique
       imageAlt.innerHTML = `<img src="${choice.imageUrl}" alt="${choice.altTxt}">`;
       title.textContent = `${choice.name}`;
@@ -97,10 +97,13 @@ choiceProduct.addEventListener("click", () => {
     articleClient.color === "" ||
     articleClient.color === undefined
   ) {
+
     // joue l'alerte
     alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
     // si ça passe le controle
-  } else {
+  }
+
+  else {
     // joue panier
     Panier();
     console.log("clic effectué");
@@ -145,7 +148,7 @@ function addAnotherProduct() {
   productsPush.sort(function triage(a, b) {
     if (a._id < b._id) return -1;
     if (a._id > b._id) return 1;
-    if (a._id = b._id){
+    if (a._id = b._id) {
       if (a.color < b.color) return -1;
       if (a.color > b.color) return 1;
     }
@@ -162,9 +165,19 @@ function Panier() {
   // variable qui sera ce qu'on récupère du local storage appelé panierStocker et qu'on a convertit en JSon
   productsChecked = JSON.parse(localStorage.getItem("panierStocker"));
   // si produitChecked existe (si des articles ont déja été choisis et enregistrés par le client)
+
   if (productsChecked) {
+    let count = 0;
     for (let choice of productsChecked) {
-      //comparateur d'égalité des articles actuellement choisis et ceux déja choisis
+      if (
+        choice.quantity !== undefined
+      ) { count += parseInt(choice.quantity); }
+      if (
+        count > 100
+      ) {
+        alert("votre panier contient déja 100 canapés, la quantité maximum autorisé")
+        return;
+      }
       if (choice._id === ID && choice.color === articleClient.color) {
         //information client
         alert("RAPPEL: Vous aviez déja choisit cet article.");
