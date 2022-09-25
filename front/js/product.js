@@ -166,7 +166,7 @@ function checkCartSize() {
             count += parseInt(choice.quantity);
         }
     }
-    count += articleClient.quantity;
+    count += parseInt (articleClient.quantity);
     if (count > 100) {
         return false;
     }
