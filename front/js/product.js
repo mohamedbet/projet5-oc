@@ -25,7 +25,8 @@ function getArticle() {
         }
     })
     .catch((error) => {
-        console.log("Erreur de la requête API");
+    document.querySelector(".titles").innerHTML = "<h1>erreur 404</h1>";
+    console.log("erreur 404, sur ressource api:" + error);
     })
 }
     
