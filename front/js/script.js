@@ -94,8 +94,10 @@ async function fillSection() {
             productDescription.innerHTML = resultatAPI[article].description;
         }
     })
-    .catch (function(error){
-        return error;
+        //  dans le cas d'une erreur remplace le contenu de titre par un h1 au contenu de erreur 404 et renvoit en console l'erreur.
+  .catch(function(error) {
+    document.querySelector(".titles").innerHTML = "<h1>erreur 404</h1>";
+    console.log("erreur 404, sur ressource api:" + error);
     });
 }
 
