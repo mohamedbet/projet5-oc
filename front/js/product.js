@@ -106,6 +106,9 @@ Pour consulter votre panier, cliquez sur OK`)){
         if (resultFind) {
             let newQuantite =
             parseInt(optionsProduit.quantiteProduit) + parseInt(resultFind.quantiteProduit);
+            if(newQuantite >100)
+            {alert("veuillez ne pas ajouter plus 100 produits!")
+            return;}
             resultFind.quantiteProduit = newQuantite;
             localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
             console.table(produitLocalStorage);

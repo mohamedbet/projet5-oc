@@ -44,7 +44,7 @@ for (let produit in produitLocalStorage){
 
     // Insertion de la couleur
     let productColor = document.createElement("p");
-    productTitle.appendChild(productColor);
+    productItemContentTitlePrice.appendChild(productColor);
     productColor.innerHTML = produitLocalStorage[produit].couleurProduit;
     productColor.style.fontSize = "20px";
 
@@ -209,10 +209,12 @@ function getForm() {
     const validFirstName = function(inputFirstName) {
         let firstNameErrorMsg = inputFirstName.nextElementSibling;
 
+
         if (charRegExp.test(inputFirstName.value)) {
             firstNameErrorMsg.innerHTML = '';
         } else {
             firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+            inputFirstName.value="";
         }
     };
 
@@ -224,6 +226,7 @@ function getForm() {
             lastNameErrorMsg.innerHTML = '';
         } else {
             lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+            inputLastName.value="";
         }
     };
 
@@ -235,6 +238,7 @@ function getForm() {
             addressErrorMsg.innerHTML = '';
         } else {
             addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+            inputAddress.value="";
         }
     };
 
@@ -246,6 +250,7 @@ function getForm() {
             cityErrorMsg.innerHTML = '';
         } else {
             cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+            inputCity.value="";
         }
     };
 
@@ -257,6 +262,7 @@ function getForm() {
             emailErrorMsg.innerHTML = '';
         } else {
             emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+            inputEmail.value="";
         }
     };
     }
@@ -268,6 +274,7 @@ function postForm(){
 
     //Ecouter le panier
     btn_commander.addEventListener("click", (event)=>{
+        event.preventDefault()
     
         //Récupération des coordonnées du formulaire client
         let inputName = document.getElementById('firstName');
@@ -275,6 +282,10 @@ function postForm(){
         let inputAdress = document.getElementById('address');
         let inputCity = document.getElementById('city');
         let inputMail = document.getElementById('email');
+
+        if(!inputName||!inputLastName||!inputAdress||!inputCity||!inputMail)
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
 
         //Construction d'un array depuis le local storage
         let idProducts = [];
