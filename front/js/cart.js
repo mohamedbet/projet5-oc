@@ -283,6 +283,26 @@ function postForm(){
         let inputCity = document.getElementById('city');
         let inputMail = document.getElementById('email');
 
+        if(inputName.value==="") 
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
+
+        if(inputLastName.value==="") 
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
+
+        if(inputAdress.value==="") 
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
+
+        if(inputCity.value==="") 
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
+
+        if(inputMail.value==="") 
+        {alert("veuillez remplier le formulaire correctement!")
+        return;}
+
         if(!inputName||!inputLastName||!inputAdress||!inputCity||!inputMail)
         {alert("veuillez remplier le formulaire correctement!")
         return;}
